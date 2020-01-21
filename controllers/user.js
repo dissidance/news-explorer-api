@@ -5,20 +5,24 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const AutorizationError = require('../errors/autorization-error');
 const BadRequestError = require('../errors/bad-request-error');
+const {
+  userNotFoundText, badRequestText, autorizationCompleteText, autorizationErrorText,
+  userAlrearyCreatedText,
+} = require('../variables/messages');
 
 module.exports.userInfo = (req, res, next) => {
   const { _id } = req.user;
   User.findById(_id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователя с таким id не существует');
+        throw new NotFoundError(userNotFoundText);
       } else {
         res.send(user);
       }
     })
     .catch((err) => {
       if (err.message.includes('Cast to ObjectId failed')) {
-        next(new NotFoundError('Пользователя с таким id не существует'));
+        next(new NotFoundError(userNotFoundText));
       }
     });
 };
@@ -33,10 +37,10 @@ module.exports.login = (req, res, next) => {
           maxAge: 3600000,
           httpOnly: true,
         })
-        .json({ message: 'Авторизация прошла успешно' });
+        .json({ message: autorizationCompleteText });
     })
     .catch(() => {
-      next(new AutorizationError('Неправильные почта или пароль'));
+      next(new AutorizationError(autorizationErrorText));
     });
 };
 
@@ -46,14 +50,14 @@ module.exports.createUser = async (req, res, next) => {
   } = req.body;
   const isExist = await User.findOne({ email });
   if (isExist) {
-    next(new AutorizationError('Такой пользователь уже существует'));
+    next(new AutorizationError(userAlrearyCreatedText));
     return;
   }
   const newUser = new User({
     name, email, password,
   });
   newUser.save((err) => {
-    if (err) return next(new BadRequestError('Пароль не прошел валидацию'));
+    if (err) return next(new BadRequestError(badRequestText));
     return res.send({
       name, email,
     });
