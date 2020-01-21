@@ -3,8 +3,11 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const { celebrate, errors } = require('celebrate');
+const { createUserValidation, loginValidation } = require('./variables/validation');
 const auth = require('./middlewares/auth');
 const routes = require('./routes');
+const handleError = require('./middlewares/error');
 const { createUser, login } = require('./controllers/user');
 
 const { PORT = 3000 } = process.env;
@@ -21,26 +24,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', celebrate(createUserValidation), createUser);
+app.post('/signin', celebrate(loginValidation), login);
 
 app.use(auth);
 app.use('/', routes);
 
-app.use((err, req, res, next) => {
-  if (!err.statusCode) {
-    const { statusCode = 500, message } = err;
-    res
-      .status(statusCode)
-      .send({
-        message: statusCode === 500
-          ? 'На сервере произошла ошибка'
-          : message,
-      });
-  }
-  res.status(err.statusCode).send({ message: err.message });
-  next();
-});
+app.use(errors());
+
+app.use(handleError);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console

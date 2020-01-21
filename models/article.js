@@ -50,4 +50,16 @@ const articleSchema = new mongoose.Schema({
   },
 });
 
+articleSchema.virtual('public').get(function getPublic() {
+  return {
+    keyword: this.keyword,
+    title: this.title,
+    text: this.text,
+    date: this.date,
+    source: this.source,
+    link: this.link,
+    image: this.image,
+  };
+});
+
 module.exports = mongoose.model('article', articleSchema);

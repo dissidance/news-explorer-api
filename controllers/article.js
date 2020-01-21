@@ -32,7 +32,7 @@ module.exports.createArticle = (req, res, next) => {
   Article.create({
     keyword, title, text, date, source, link, image, owner,
   })
-    .then((article) => res.send(article))
+    .then((article) => res.send(article.public))
     .catch(() => next(new BadRequestError('Данные не прошли валидацию')));
 };
 
