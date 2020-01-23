@@ -11,7 +11,7 @@ const { devDbAddress } = require('./config');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { createUserValidation, loginValidation } = require('./variables/validation');
 const auth = require('./middlewares/auth');
-const limiter = require('./middlewares/rateLimit');
+const { limiter } = require('./middlewares/rateLimit');
 const routes = require('./routes');
 const handleError = require('./middlewares/error');
 const { createUser, login } = require('./controllers/user');
@@ -26,11 +26,11 @@ mongoose.connect(NODE_ENV === 'production' ? DB_ADDRESS : devDbAddress, {
   useUnifiedTopology: true,
 });
 
+app.use(limiter);
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(limiter);
 
 app.use(requestLogger);
 
