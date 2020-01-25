@@ -7,3 +7,6 @@ module.exports.accessErrorText = 'У вас недостаточно прав';
 module.exports.autorizationCompleteText = 'Авторизация прошла успешно';
 module.exports.autorizationErrorText = 'Неправильные почти или пароль';
 module.exports.userAlrearyCreatedText = 'Пользователь уже существует';
+module.exports.needAuthorizationText = 'Необходима авторизация';
+module.exports.resoureNotFoundText = 'Запрашиваемый ресурс не найден';
+module.exports.serverErrorText = 'На сервере произошла ошибка';

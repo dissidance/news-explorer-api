@@ -6,7 +6,10 @@ const NotFoundError = require('../errors/not-found-err');
 const AutorizationError = require('../errors/autorization-error');
 const BadRequestError = require('../errors/bad-request-error');
 const {
-  userNotFoundText, badRequestText, autorizationCompleteText, autorizationErrorText,
+  userNotFoundText,
+  badRequestText,
+  autorizationCompleteText,
+  autorizationErrorText,
   userAlrearyCreatedText,
 } = require('../variables/messages');
 
@@ -31,7 +34,9 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : key, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : key, {
+        expiresIn: '7d',
+      });
       res
         .cookie('jwt', token, {
           maxAge: 3600000,
@@ -45,21 +50,22 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.createUser = async (req, res, next) => {
-  const {
-    name, password, email,
-  } = req.body;
+  const { name, password, email } = req.body;
   const isExist = await User.findOne({ email });
   if (isExist) {
     next(new AutorizationError(userAlrearyCreatedText));
     return;
   }
   const newUser = new User({
-    name, email, password,
+    name,
+    email,
+    password,
   });
   newUser.save((err) => {
     if (err) return next(new BadRequestError(badRequestText));
     return res.send({
-      name, email,
+      name,
+      email,
     });
   });
 };

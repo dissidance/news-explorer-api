@@ -4,8 +4,12 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-error');
 const AccessError = require('../errors/access-error');
 const {
-  userNotFoundText, articlesNotFoundText, badRequestText, articleNotFoundText,
-  articleIsDeletedText, accessErrorText,
+  userNotFoundText,
+  articlesNotFoundText,
+  badRequestText,
+  articleNotFoundText,
+  articleIsDeletedText,
+  accessErrorText,
 } = require('../variables/messages');
 
 module.exports.userArticles = (req, res, next) => {
@@ -34,14 +38,22 @@ module.exports.createArticle = (req, res, next) => {
   const owner = req.user._id;
 
   Article.create({
-    keyword, title, text, date, source, link, image, owner,
+    keyword,
+    title,
+    text,
+    date,
+    source,
+    link,
+    image,
+    owner,
   })
     .then((article) => res.send(article.public))
     .catch(() => next(new BadRequestError(badRequestText)));
 };
 
 module.exports.removeArticle = (req, res, next) => {
-  Article.findById(req.params.articleId).select('+owner')
+  Article.findById(req.params.articleId)
+    .select('+owner')
     .then((article) => {
       if (article) {
         if (article.owner.toString() === req.user._id) {
@@ -51,12 +63,15 @@ module.exports.removeArticle = (req, res, next) => {
         } else {
           throw new AccessError(accessErrorText);
         }
+      } else {
+        throw new NotFoundError(articleNotFoundText);
       }
     })
     .catch((err) => {
       if (err.message.includes('Cast to ObjectId failed')) {
         next(new NotFoundError(articleNotFoundText));
+      } else {
+        next(new NotFoundError(articleNotFoundText));
       }
-      next(err);
     });
 };
