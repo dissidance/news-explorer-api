@@ -18,9 +18,8 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 
-const whitelist = ['http://localhost:8080', 'https://news-explorer.xyz'];
 const corsOptions = {
-  origin: whitelist,
+  origin: 'https://news-explorer.xyz',
   credentials: true,
 };
 
