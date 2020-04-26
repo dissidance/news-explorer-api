@@ -18,10 +18,10 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 
-// const corsOptions = {
-//   origin: '*',
-//   credentials: true,
-// };
+const corsOptions = {
+  origin: ['localhost:8080', 'https://news-explorer.xyz'],
+  credentials: true,
+};
 
 mongoose.connect(NODE_ENV === 'production' ? DB_ADDRESS : devDbAddress, {
   useNewUrlParser: true,
@@ -38,7 +38,7 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.use('/', routes);
+app.use('/', cors(corsOptions), routes);
 
 app.use(errorLogger);
 
