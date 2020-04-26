@@ -19,7 +19,7 @@ const app = express();
 
 
 const corsOptions = {
-  origin: ['localhost:8080', 'https://news-explorer.xyz'],
+  origin: ['http://localhost:8080', 'https://news-explorer.xyz'],
   credentials: true,
 };
 
