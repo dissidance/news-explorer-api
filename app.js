@@ -19,7 +19,7 @@ const app = express();
 
 
 const corsOptions = {
-  origin: 'https://news-explorer.xyz',
+  origin: '*',
   credentials: true,
 };
 
@@ -38,8 +38,7 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.use(cors(corsOptions));
-app.use('/', routes);
+app.use('/', cors(corsOptions), routes);
 
 app.use(errorLogger);
 
