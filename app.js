@@ -38,7 +38,8 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.use('/', cors(corsOptions), routes);
+app.use(cors(corsOptions));
+app.use('/', routes);
 
 app.use(errorLogger);
 
