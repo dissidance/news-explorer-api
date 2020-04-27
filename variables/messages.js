@@ -10,3 +10,5 @@ module.exports.userAlrearyCreatedText = 'Пользователь уже сущ�
 module.exports.needAuthorizationText = 'Необходима авторизация';
 module.exports.resoureNotFoundText = 'Запрашиваемый ресурс не найден';
 module.exports.serverErrorText = 'На сервере произошла ошибка';
+module.exports.logoutErrorText = 'Ошибка выхода из системы';
+module.exports.logoutCompleteText = 'Выход прошел успешно';

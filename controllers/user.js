@@ -11,6 +11,8 @@ const {
   autorizationCompleteText,
   autorizationErrorText,
   userAlrearyCreatedText,
+  logoutErrorText,
+  logoutCompleteText,
 } = require('../variables/messages');
 
 module.exports.userInfo = (req, res, next) => {
@@ -40,11 +42,31 @@ module.exports.login = (req, res, next) => {
       res
         .cookie('jwt', token, {
           maxAge: 3600000,
+          httpOnly: true,
         })
         .json({ message: autorizationCompleteText });
     })
     .catch(() => {
       next(new AutorizationError(autorizationErrorText));
+    });
+};
+
+module.exports.logout = (req, res, next) => {
+  const { _id } = req.body;
+  return User.findById(_id)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : key, {
+        expiresIn: '7d',
+      });
+      res
+        .cookie('jwt', token, {
+          maxAge: -1,
+          httpOnly: true,
+        })
+        .json({ message: logoutCompleteText });
+    })
+    .catch(() => {
+      next(new AutorizationError(logoutErrorText));
     });
 };
 
