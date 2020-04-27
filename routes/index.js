@@ -13,7 +13,7 @@ router.post('/signin', celebrate(loginValidation), login);
 
 router.use(auth);
 
-router.use('/logout', logout);
+router.post('/logout', logout);
 router.use('/users', usersRouter);
 router.use('/articles', articlesRouter);
 router.use('/', (req, res, next) => {
