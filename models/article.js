@@ -52,6 +52,7 @@ const articleSchema = new mongoose.Schema({
 
 articleSchema.virtual('public').get(function getPublic() {
   return {
+    id: this._id,
     keyword: this.keyword,
     title: this.title,
     text: this.text,
