@@ -19,7 +19,10 @@ const app = express();
 
 
 const corsOptions = {
-  origin: ['http://localhost:8080', 'https://news-explorer.xyz', 'https://dissidance.github.io'],
+  origin: ['http://localhost:8080',
+    'https://news-explorer.xyz',
+    'http://news-explorer.xyz',
+    'https://dissidance.github.io'],
   credentials: true,
 };
 
