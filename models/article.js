@@ -12,7 +12,6 @@ const articleSchema = new mongoose.Schema({
   },
   text: {
     type: String,
-    required: true,
   },
   date: {
     type: String,
@@ -34,10 +33,9 @@ const articleSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
     validate: {
       validator(link) {
-        return validator.isURL(link);
+        return validator.isURL(link) || link === '';
       },
       message: (props) => `${props.value} не является ссылкой`,
     },

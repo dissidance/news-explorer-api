@@ -10,11 +10,11 @@ module.exports.createCardValidation = {
   body: Joi.object().keys({
     keyword: Joi.string().required(),
     title: Joi.string().required(),
-    text: Joi.string().required(),
+    text: Joi.string().allow('').required(),
     date: Joi.string().required(),
     source: Joi.string().required(),
     link: Joi.string().required(),
-    image: Joi.string().required(),
+    image: Joi.string().allow('').optional().required(),
   }),
 };
 
