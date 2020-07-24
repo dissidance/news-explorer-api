@@ -20,6 +20,8 @@ const app = express();
 
 const corsOptions = {
   origin: ['http://localhost:8080',
+    'http://localhost:3000',
+    'http://dissidance.github.io/vk-auth',
     'https://news-explorer.xyz',
     'http://news-explorer.xyz',
     'https://dissidance.github.io'],
